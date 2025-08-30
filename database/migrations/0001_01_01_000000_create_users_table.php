@@ -18,8 +18,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             // Pegawai Data
-            $table->string('nrk', 50)->unique()->comment('Nomor Registrasi Kepegawaian')->nullable();
-            $table->enum('role', ['superadmin', 'atasan', 'pegawai'])->default('pegawai')->nullable();
+            $table->string('nrk', 50)->unique()->comment('Nomor Registrasi Kepegawaian');
+            $table->enum('role', ['superadmin', 'atasan', 'pegawai'])->default('pegawai');
             $table->string('phone', 20)->nullable();
             $table->string('avatar')->nullable();
             $table->date('hire_date')->nullable();

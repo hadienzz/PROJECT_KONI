@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('code', 20)->unique();
             $table->text('description')->nullable();
-            $table->text('address')->nullable();
             $table->unsignedBigInteger('supervisor_id')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
