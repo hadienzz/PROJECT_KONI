@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import TabsDataPegawai from '@/components/TabsDataPegawai.vue';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { UserIcon } from 'lucide-vue-next';
@@ -58,29 +59,7 @@ const current = ref<'bulanan' | 'jabatan' | 'hukdis' | 'prestasi'>('bulanan');
                     </div>
 
                     <div class="pt-4">
-                        <TabsContent value="bulanan">
-                            <div class="grid gap-6 lg:grid-cols-2">
-                                <Card class="border">
-                                    <CardHeader class="pb-2 text-sm font-semibold">Data Pegawai</CardHeader>
-                                    <CardContent class="space-y-2">
-                                        <div class="grid grid-cols-3 items-center gap-2">
-                                            <span class="text-gray-500">NRK</span>
-                                            <div class="col-span-2 rounded-md bg-gray-100 p-2">123456</div>
-                                        </div>
-                                    </CardContent>
-                                </Card>
-
-                                <Card class="border">
-                                    <CardHeader class="pb-2 text-sm font-semibold">Data Atasan</CardHeader>
-                                    <CardContent class="space-y-2">
-                                        <div class="grid grid-cols-3 items-center gap-2">
-                                            <span class="text-gray-500">NRK Atasan</span>
-                                            <div class="col-span-2 rounded-md bg-gray-100 p-2">123456</div>
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            </div>
-                        </TabsContent>
+                        <TabsDataPegawai /> 
 
                         <TabsContent value="jabatan">
                             <div class="rounded-xl border p-4">Konten riwayat jabatan…</div>
