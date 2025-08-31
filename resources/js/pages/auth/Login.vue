@@ -16,10 +16,10 @@ defineProps<{
     status?: string;
     canResetPassword: boolean;
 }>();
+
 </script>
 
-<template >
-
+<template>
     <AuthBase title="Log in to your account" description="Enter your email and password below to log in">
         <Head title="Log in" />
 
@@ -35,7 +35,7 @@ defineProps<{
         >
             <div class="grid gap-6">
                 <div class="grid gap-2">
-                    <Label for="email">Email addressssssdddwa</Label>
+                    <Label for="email">Email address</Label>
                     <Input
                         id="email"
                         type="email"
@@ -84,8 +84,5 @@ defineProps<{
                 <TextLink :href="register()" :tabindex="5">Sign up</TextLink>
             </div>
         </Form>
-
     </AuthBase>
-
-
 </template>

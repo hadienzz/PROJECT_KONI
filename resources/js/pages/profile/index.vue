@@ -2,14 +2,19 @@
 import TabsDataPegawai from '@/components/TabsDataPegawai.vue';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { Head, usePage } from '@inertiajs/vue3';
 import { UserIcon } from 'lucide-vue-next';
 import { TabsContent, TabsList, TabsRoot, TabsTrigger } from 'reka-ui';
 import { ref } from 'vue';
 
 const current = ref<'bulanan' | 'jabatan' | 'hukdis' | 'prestasi'>('bulanan');
+
+const page = usePage();
+const userInfo = page.props.auth.user;
 </script>
 
 <template>
+    <Head title="Profil" />
     <AppLayout>
         <Card class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl">
             <CardHeader>
@@ -21,8 +26,8 @@ const current = ref<'bulanan' | 'jabatan' | 'hukdis' | 'prestasi'>('bulanan');
 
             <CardContent>
                 <header class="mb-4">
-                    <div class="text-2xl">{{ $page.props.auth.user.name }}</div>
-                    <div class="text-muted-foreground">{{ $page.props.auth.user.email }}</div>
+                    <div class="text-2xl">{{ userInfo.name }}</div>
+                    <div class="text-muted-foreground">{{ userInfo  .email }}</div>
                 </header>
 
                 <TabsRoot v-model="current" class="w-full">
@@ -59,7 +64,7 @@ const current = ref<'bulanan' | 'jabatan' | 'hukdis' | 'prestasi'>('bulanan');
                     </div>
 
                     <div class="pt-4">
-                        <TabsDataPegawai /> 
+                        <TabsDataPegawai />
 
                         <TabsContent value="jabatan">
                             <div class="rounded-xl border p-4">Konten riwayat jabatan…</div>
