@@ -21,7 +21,9 @@ const breadcrumbs: BreadcrumbItem[] = [
             <div class="grid auto-rows-min gap-4 md:grid-cols-3">
                 <div class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
                     <PlaceholderPattern />
-
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <p class="text-sm text-muted-foreground">absenk</p>
+                    </div>
                 </div>
                 <div class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
                     <PlaceholderPattern />

@@ -1,15 +1,30 @@
 <script setup lang="ts">
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { dashboard } from '@/routes';
+import { type BreadcrumbItem } from '@/types';
 import { UserIcon } from 'lucide-vue-next';
 import { TabsContent, TabsList, TabsRoot, TabsTrigger } from 'reka-ui';
 import { ref } from 'vue';
+
+
+
+const breadcrumbs: BreadcrumbItem[] = [
+  {
+    title: 'Dashboard',
+    href: dashboard().url,
+  },
+  {
+    title: 'Profile',
+    href: '#',
+  },
+];
 
 const current = ref<'bulanan' | 'jabatan' | 'hukdis' | 'prestasi'>('bulanan');
 </script>
 
 <template>
-    <AppLayout>
+    <AppLayout :breadcrumbs="breadcrumbs">
         <Card class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl">
             <CardHeader>
                 <div class="flex items-center gap-2 text-xl">

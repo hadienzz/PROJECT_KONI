@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\DB;
 
 class PasswordResetLinkController extends Controller
 {
@@ -30,12 +31,25 @@ class PasswordResetLinkController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
+            'nrk' => 'required|string'
         ]);
+
+
+        $user = DB::table('users')->where([
+            'email' => $request->email,
+            'nrk' => $request->nrk,
+        ])->first();
+
+        if (!$user) {
+            return back()->withErrors([
+                'email' => __('Kami tidak menemukan pengguna dengan kombinasi email dan NRK tersebut.'),
+            ]);
+        }
 
         Password::sendResetLink(
             $request->only('email')
         );
 
-        return back()->with('status', __('A reset link will be sent if the account exists.'));
+        return back()->with('status', __('Link reset password telah dikirim ke email Anda.'));
     }
 }
