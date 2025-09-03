@@ -14,12 +14,12 @@ Route::middleware('auth')->group(function () {
 
 // ONLY @PEGAWAI
 Route::middleware(['auth', 'role:pegawai'])->group(function () {
-    Route::get('inputactivity', fn() => Inertia::render('activities/index'))->name('inputactivity');
+
 });
 
 // ONLY @ATASAN
 Route::middleware(['auth', 'role:atasan'])->group(function () {
-    //  -
+    Route::get('inputactivity', fn() => Inertia::render('activities/index'))->name('inputactivity');
 });
 
 // ONLY @SUPERADMIN

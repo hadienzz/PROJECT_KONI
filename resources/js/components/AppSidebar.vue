@@ -31,6 +31,7 @@ const baseNav = [
     atasan: [
         { title: 'Users', href: '/users', icon: UserIcon },
         { title: 'Attendances', href: '/attendances', icon: Activity },
+        { title: 'Input Activity', href: '/inputactivity', icon: Activity },
     ],
 
     //  SI @PEGAWAI
