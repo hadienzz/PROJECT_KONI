@@ -17,8 +17,8 @@ Route::middleware(['auth', 'role:pegawai'])->group(function () {
 
 });
 
-// ONLY @ATASAN
-Route::middleware(['auth', 'role:atasan'])->group(function () {
+// GROUP @ATASAN + PEGAWAI
+Route::middleware(['auth', 'role:atasan|pegawai'])->group(function () {
     Route::get('inputactivity', fn() => Inertia::render('activities/index'))->name('inputactivity');
 });
 
