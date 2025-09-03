@@ -1,21 +1,57 @@
 <script setup lang="ts">
 import TabsDataPegawai from '@/components/TabsDataPegawai.vue';
+import TabsHukdis from '@/components/TabsHukdis.vue';
+import TabsJabatan from '@/components/TabsJabatan.vue';
+import TabsPrestasi from '@/components/TabsPrestasi.vue';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head, usePage } from '@inertiajs/vue3';
+import { dashboard } from '@/routes';
+import { type BreadcrumbItem } from '@/types';
+import { usePage } from '@inertiajs/vue3';
 import { UserIcon } from 'lucide-vue-next';
-import { TabsContent, TabsList, TabsRoot, TabsTrigger } from 'reka-ui';
-import { ref } from 'vue';
+import { TabsList, TabsRoot, TabsTrigger } from 'reka-ui';
 
-const current = ref<'bulanan' | 'jabatan' | 'hukdis' | 'prestasi'>('bulanan');
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Dashboard',
+        href: dashboard().url,
+    },
+    {
+        title: 'Profile',
+        href: '#',
+    },
+];
+
+type TabsTriggerProps = {
+    value: 'bulanan' | 'jabatan' | 'hukdis' | 'prestasi';
+    title: string;
+};
+
+const TabsTriggerContent: TabsTriggerProps[] = [
+    {
+        value: 'bulanan',
+        title: 'Data Bulanan',
+    },
+    {
+        value: 'jabatan',
+        title: 'Daftar Riwayat Jabatan',
+    },
+    {
+        value: 'hukdis',
+        title: 'Daftar Riwayat Hukdis',
+    },
+    {
+        value: 'prestasi',
+        title: 'Daftar Prestasi',
+    },
+];
 
 const page = usePage();
 const userInfo = page.props.auth.user;
 </script>
 
 <template>
-    <Head title="Profil" />
-    <AppLayout>
+    <AppLayout :breadcrumbs="breadcrumbs">
         <Card class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl">
             <CardHeader>
                 <div class="flex items-center gap-2 text-xl">
@@ -27,56 +63,28 @@ const userInfo = page.props.auth.user;
             <CardContent>
                 <header class="mb-4">
                     <div class="text-2xl">{{ userInfo.name }}</div>
-                    <div class="text-muted-foreground">{{ userInfo  .email }}</div>
+                    <div class="text-muted-foreground">{{ userInfo.email }}</div>
                 </header>
 
-                <TabsRoot v-model="current" class="w-full">
+                <TabsRoot default-value="bulanan" class="w-full">
                     <div class="overflow-x-auto">
                         <TabsList class="relative flex gap-6 border-b" aria-label="Data Pegawai">
                             <TabsTrigger
-                                value="bulanan"
+                                v-for="item in TabsTriggerContent"
+                                :key="item.value"
+                                :value="item.value"
                                 class="-mb-px border-b-2 border-transparent px-1.5 pb-3 text-sm font-medium whitespace-nowrap text-gray-600 hover:text-blue-600 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600"
                             >
-                                Data Bulanan
-                            </TabsTrigger>
-
-                            <TabsTrigger
-                                value="jabatan"
-                                class="-mb-px border-b-2 border-transparent px-1.5 pb-3 text-sm font-medium whitespace-nowrap text-gray-600 hover:text-blue-600 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600"
-                            >
-                                Daftar Riwayat Jabatan
-                            </TabsTrigger>
-
-                            <TabsTrigger
-                                value="hukdis"
-                                class="-mb-px border-b-2 border-transparent px-1.5 pb-3 text-sm font-medium whitespace-nowrap text-gray-600 hover:text-blue-600 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600"
-                            >
-                                Daftar Riwayat Hukdis
-                            </TabsTrigger>
-
-                            <TabsTrigger
-                                value="prestasi"
-                                class="-mb-px border-b-2 border-transparent px-1.5 pb-3 text-sm font-medium whitespace-nowrap text-gray-600 hover:text-blue-600 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600"
-                            >
-                                Daftar Prestasi
+                                {{ item.title }}
                             </TabsTrigger>
                         </TabsList>
                     </div>
 
                     <div class="pt-4">
                         <TabsDataPegawai />
-
-                        <TabsContent value="jabatan">
-                            <div class="rounded-xl border p-4">Konten riwayat jabatan…</div>
-                        </TabsContent>
-
-                        <TabsContent value="hukdis">
-                            <div class="rounded-xl border p-4">Konten riwayat hukdis…</div>
-                        </TabsContent>
-
-                        <TabsContent value="prestasi">
-                            <div class="rounded-xl border p-4">Konten prestasi…</div>
-                        </TabsContent>
+                        <TabsJabatan />
+                        <TabsHukdis />
+                        <TabsPrestasi />
                     </div>
                 </TabsRoot>
             </CardContent>

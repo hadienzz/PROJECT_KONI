@@ -2,34 +2,40 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\UserController;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome');
-})->name('home');
+Route::get('/', fn() => redirect()->route('login'));
 
-Route::get('dashboard', function () {
-    return Inertia::render('dashboard/index');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// @ALL ROLE
+Route::middleware('auth')->group(function () {
+    Route::get('dashboard', fn() => Inertia::render('dashboard/index'))->name('dashboard');
+    Route::get('profile', fn() => Inertia::render('profile/index'))->name('profile');
+});
 
-Route::get('/profile', function () {
-    return Inertia::render('profile/index');
-})->middleware(['auth', 'verified'])->name('profile');
+// ONLY @PEGAWAI
+Route::middleware(['auth', 'role:pegawai'])->group(function () {
+    Route::get('inputactivity', fn() => Inertia::render('activities/index'))->name('inputactivity');
+});
 
-Route::get('/inputactivity', function () {
-    return Inertia::render('activities/index');
-})->middleware(['auth', 'verified'])->name('inputactivity');
+// ONLY @ATASAN
+Route::middleware(['auth', 'role:atasan'])->group(function () {
+    //  -
+});
 
-Route::get('/attendances', function () {
-    return Inertia::render('attendances/index');
-})->middleware(['auth', 'verified'])->name('attendances');
+// ONLY @SUPERADMIN
+Route::middleware(['auth', 'role:superadmin'])->group(function () {
+    Route::get('branches', fn() => Inertia::render('branches/index'))->name('branches');
+});
 
-Route::get('/users', function () {
-    return Inertia::render('users/index');
-})->middleware(['auth', 'verified'])->name('users');
 
-Route::get('/branches', function () {
-    return Inertia::render('branches/index');
-})->middleware(['auth', 'verified'])->name('branches');
+// GROUP @SUPERADMIN + @ATASAN
+Route::middleware(['auth', 'role:superadmin|atasan'])->group(function () {
+    Route::get('attendances', fn() => Inertia::render('attendances/index'))->name('attendances');
+    Route::get('users', [UserController::class, 'index'])->name('users.index');
+});
+
+
+
 
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';
