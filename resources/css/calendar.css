@@ -1,0 +1,23 @@
+:root {
+  --fc-border-color: #d81f1f;
+  --fc-background-color: #ffffff;
+  --fc-small-font-size: 12px;
+  --fc-daygrid-event-dot-width: 6px;
+}
+
+.fc {
+  font-family: 'Inter', sans-serif;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+.fc .fc-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2706bc;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(227, 221, 221, 0.1);
+}
