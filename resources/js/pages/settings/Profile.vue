@@ -9,7 +9,9 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import AppLayout from '@/layouts/AppLayout.vue'
 import SettingsLayout from '@/layouts/settings/Layout.vue'
+import { Form } from '@inertiajs/vue3'
 import { type BreadcrumbItem } from '@/types'
+import { ref } from 'vue'
 
 interface Props {
   mustVerifyEmail: boolean
@@ -27,11 +29,27 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
 const page = usePage()
 const user = page.props.auth.user
+const recentlySuccessful = ref(false)
+const processing = ref(false)
 
 const form = useForm({
   name: user.name,
   email: user.email,
 })
+
+// Add form submission handler
+const submit = () => {
+  processing.value = true
+  form.put('/profile', {
+    onSuccess: () => {
+      recentlySuccessful.value = true
+      setTimeout(() => recentlySuccessful.value = false, 2000)
+    },
+    onFinish: () => {
+      processing.value = false
+    }
+  })
+}
 </script>
 
 
@@ -43,19 +61,18 @@ const form = useForm({
             <div class="flex flex-col space-y-6">
                 <HeadingSmall title="Profile information" description="Update your name and email address" />
 
-              <Form :form="form" @submit.prevent="form.put('/profile')">
+              <Form @submit.prevent="submit">
                     <div class="grid gap-2">
                         <Label for="name">Name</Label>
                         <Input
                             id="name"
+                            v-model="form.name"
                             class="mt-1 block w-full"
-                            name="name"
-                            :default-value="user.name"
                             required
                             autocomplete="name"
                             placeholder="Full name"
                         />
-                        <InputError class="mt-2" :message="form.errors.email" />
+                        <InputError class="mt-2" :message="form.errors.name" />
                     </div>
 
                     <div class="grid gap-2">
@@ -63,14 +80,13 @@ const form = useForm({
                         <Input
                             id="email"
                             type="email"
+                            v-model="form.email"
                             class="mt-1 block w-full"
-                            name="email"
-                            :default-value="user.email"
                             required
                             autocomplete="username"
                             placeholder="Email address"
                         />
-                        <InputError class="mt-2" :message="errors.email" />
+                        <InputError class="mt-2" :message="form.errors.email" />
                     </div>
 
                     <div v-if="mustVerifyEmail && !user.email_verified_at">

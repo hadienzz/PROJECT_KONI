@@ -13,9 +13,11 @@ Route::middleware('auth')->group(function () {
 });
 
 // ONLY @PEGAWAI
-Route::middleware(['auth', 'role:pegawai'])->group(function () {});
+// Route::middleware(['auth', 'role:pegawai'])->group(function () {});
 
-// ONLY @ATASAN // testing
+// });
+
+// GROUP @ATASAN + PEGAWAI
 Route::middleware(['auth', 'role:atasan|pegawai'])->group(function () {
     Route::get('inputactivity', fn() => Inertia::render('activities/index'))->name('inputactivity');
 });
@@ -27,7 +29,7 @@ Route::middleware(['auth', 'role:superadmin'])->group(function () {
 
 
 // GROUP @SUPERADMIN + @ATASAN
-Route::middleware(['auth', 'role:superadmin|atasan|pegawai'])->group(function () {
+Route::middleware(['auth', 'role:superadmin|atasan'])->group(function () {
     Route::get('attendances', fn() => Inertia::render('attendances/index'))->name('attendances');
     Route::get('users', [UserController::class, 'index'])->name('users.index');
 });
