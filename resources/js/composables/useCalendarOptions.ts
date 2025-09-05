@@ -62,7 +62,7 @@ export function useCalendarOptions(events: AddActivitiesProps[], calendarKey: an
         },
         eventClick: (info: any) => {
             const selectedId = info.event.extendedProps.event_id;
-            const selectedEvent = handleDetail(selectedId)
+            const selectedEvent = handleDetail(selectedId);
         },
         // eventClick: (info: any) => {
         //     const ext = info.event.extendedProps;

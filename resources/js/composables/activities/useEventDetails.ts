@@ -10,6 +10,8 @@ function handleDetail(id: string) {
     const item = USER_EVENTS.value.find((e) => e.event_id === id) ?? null;
     selectedEvent.value = item;
     detailsOpened.value = !!item;
+
+    return item;
 }
 
 function closeDetail() {

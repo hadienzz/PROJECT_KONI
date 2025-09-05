@@ -22,8 +22,10 @@ const breadcrumbs: BreadcrumbItem[] = [
     <Head title="Activities" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <EmployeeActivities v-if="isEmployee" />
+        <div clas>
+            <EmployeeActivities v-if="isEmployee" />
 
-        <SupervisorDashboard v-if="isSupervisor" />
+            <SupervisorDashboard v-if="isSupervisor" />
+        </div>
     </AppLayout>
 </template>

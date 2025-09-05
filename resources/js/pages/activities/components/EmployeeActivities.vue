@@ -10,9 +10,10 @@ import { useCalendarOptions } from '@/composables/useCalendarOptions';
 import { USER_EVENTS } from '@/constants';
 import DialogEvent from '@/pages/activities/components/DialogAddEvent.vue';
 import { ref } from 'vue';
+import DialogDetail from './DialogDetail.vue';
 
 const { myEvents, totalAktivitas, disetujui, ditolak, belumDivalidasi, isAbsen } = useEvents();
-const { selectedEvent } = useEventDetails();
+const { selectedEvent, detailsOpened } = useEventDetails();
 const { handleAbsen } = useAbsent();
 
 const { calendarOptions: myCalendarOptions } = useCalendarOptions(USER_EVENTS.value, 'my-attendance-calendar', {
@@ -32,10 +33,10 @@ const openOverlay = () => {
 
 <template>
     <div class="grid gap-6 lg:grid-cols-1">
-        <Card class="border">
+        <Card class="border px-0">
             <CardHeader class="pb-2 text-sm font-semibold">Data Aktivitas</CardHeader>
             <CardContent class="space-y-2">
-                <div class="flex h-full flex-1 flex-col-reverse gap-4 overflow-x-auto rounded-xl p-4 lg:flex-row">
+                <div class="flex h-full flex-1 flex-col-reverse gap-4 overflow-x-auto rounded-xl lg:flex-row">
                     <div class="flex flex-1 flex-col gap-4">
                         <div>
                             <button @click="handleAbsen" class="rounded bg-blue-500 px-4 py-2 text-xs text-white hover:bg-blue-600 lg:text-base">
@@ -64,15 +65,15 @@ const openOverlay = () => {
                             </div>
                         </div>
                         <div class="grid grid-cols-3 space-y-2 space-x-2 text-xs lg:block lg:text-base">
-                            <Card class="">Disetujui: {{ disetujui }}</Card>
-                            <Card class="">Ditolak: {{ ditolak }}</Card>
-                            <Card class="">Belum Validasi: {{ belumDivalidasi }}</Card>
+                            <Card>Disetujui: {{ disetujui }}</Card>
+                            <Card>Ditolak: {{ ditolak }}</Card>
+                            <Card>Belum Validasi: {{ belumDivalidasi }}</Card>
                         </div>
                     </div>
                 </div>
             </CardContent>
             <DialogEvent v-model:open="showOverlay" />
-            <!-- <DialogDetail v-model="open" :activity="detail" /> -->
+            <DialogDetail v-model:open="detailsOpened" :activity="selectedEvent" />
         </Card>
     </div>
 </template>
