@@ -65,14 +65,14 @@ const isSuperadmin = userInfo.props.auth.user.role === 'superadmin';
                     </CardContent>
                 </Card>
 
-                <Card class="relative overflow-hidden">
+                <Card class="">
                     <CardHeader class="flex flex-1 flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle class="text-sm font-medium text-muted-foreground">Estimasi Gaji</CardTitle>
                         <DollarSign class="h-5 w-5 text-yellow-600" />
                     </CardHeader>
                     <CardContent>
                         <div class="flex items-center justify-between gap-2">
-                            <div class="text-2xl font-bold text-foreground md:text-3xl">Rp {{ showSalary ? '8.5 Juta' : 'xxx' }}</div>
+                            <div class="text-2xl font-bold text-foreground">Rp {{ showSalary ? '8.5 Juta' : 'xxx' }}</div>
                             <button
                                 type="button"
                                 class="inline-flex items-center justify-center rounded-md p-1 hover:bg-accent"
@@ -80,8 +80,8 @@ const isSuperadmin = userInfo.props.auth.user.role === 'superadmin';
                                 :aria-pressed="showSalary"
                                 :title="showSalary ? 'Sembunyikan gaji' : 'Tampilkan gaji'"
                             >
-                                <Eye v-if="showSalary" class="h-4 w-4 text-neutral-600" />
-                                <EyeClosed v-else class="h-4 w-4 text-neutral-600" />
+                                <Eye v-if="showSalary" class="h-3 w-3 text-neutral-600" />
+                                <EyeClosed v-else class="h-3 w-3 text-neutral-600" />
                             </button>
                         </div>
                         <p class="mt-1 text-xs text-muted-foreground">Berdasarkan poin terkumpul</p>

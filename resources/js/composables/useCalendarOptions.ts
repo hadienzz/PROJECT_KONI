@@ -3,6 +3,8 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { computed } from 'vue';
 import { getDayCellBackgroundColor, getEventBackgroundColor } from '../../utils/calendarColors';
+import { AddActivitiesProps } from './activities/useAddActivities';
+import useEventDetails from './activities/useEventDetails';
 
 interface CalendarConfig {
     enableDayCellColors?: boolean;
@@ -11,14 +13,14 @@ interface CalendarConfig {
     page?: 'attendance' | 'activity' | 'default';
 }
 
-export function useCalendarOptions(events: any[], calendarKey: any, config: CalendarConfig = {}) {
+export function useCalendarOptions(events: AddActivitiesProps[], calendarKey: any, config: CalendarConfig = {}) {
     const { enableDayCellColors = true, enableEventHover = true, enableDateClick = true, page = 'default' } = config;
-
+    const { handleDetail } = useEventDetails();
     const eventsWithBackground = computed(() =>
         events.map((event) => ({
             ...event,
-            backgroundColor: getEventBackgroundColor(event.extendedProps?.status),
-            borderColor: getEventBackgroundColor(event.extendedProps?.status),
+            backgroundColor: getEventBackgroundColor(event.status),
+            borderColor: getEventBackgroundColor(event.status),
             textColor: '#ffffff',
         })),
     );
@@ -58,32 +60,35 @@ export function useCalendarOptions(events: any[], calendarKey: any, config: Cale
                 console.log('Date click disabled in attendance page');
             }
         },
-
         eventClick: (info: any) => {
-            const ext = info.event.extendedProps;
-
-            // Behavior berbeda per halaman
-            if (page === 'activity') {
-                alert(
-                    `Event Click - Activity Page:
-          nama: ${info.event.extendedProps.userName}
-          judul: ${info.event.title}
-          tanggal: ${info.event.startStr}
-          waktu: ${ext.startTime} - ${ext.endTime}
-          aktivitas: ${ext.activity}
-          foto: ${ext.photo}`,
-                );
-            } else if (page === 'attendance') {
-                alert(
-                    `Event Click - Attendance Page:
-          judul: ${info.event.title}
-          tanggal: ${info.event.startStr}
-          waktu: ${ext.startTime} - ${ext.endTime}
-          aktivitas: ${ext.activity}
-          foto: ${ext.photo}`,
-                );
-            }
+            const selectedId = info.event.extendedProps.event_id;
+            const selectedEvent = handleDetail(selectedId)
         },
+        // eventClick: (info: any) => {
+        //     const ext = info.event.extendedProps;
+        //     console.log(ext);
+        //     if (page === 'activity') {
+        //         alert(
+        //             `Event Click - Activity Page:
+        //             id: ${info.event.event_id}
+        //   nama: ${info.name}
+        //   judul: ${info.event.title}
+        //   tanggal: ${info.event.startStr}
+        //   waktu: ${ext.startTime} - ${ext.endTime}
+        //   aktivitas: ${ext.activity}
+        //   foto: ${ext.photo}`,
+        //         );
+        //     } else if (page === 'attendance') {
+        //         alert(
+        //             `Event Click - Attendance Page:
+        //   judul: ${info.event.title}
+        //   tanggal: ${info.event.startStr}
+        //   waktu: ${ext.startTime} - ${ext.endTime}
+        //   aktivitas: ${ext.activity}
+        //   foto: ${ext.photo}`,
+        //         );
+        //     }
+        // },
 
         eventDidMount: (info: any) => {
             if (!enableEventHover) return;
@@ -133,7 +138,7 @@ export function useCalendarOptions(events: any[], calendarKey: any, config: Cale
                 const eventOnDate = events.find((e) => e.date === dateStr);
 
                 if (eventOnDate) {
-                    dayCellColor = getDayCellBackgroundColor(eventOnDate.extendedProps?.status);
+                    dayCellColor = getDayCellBackgroundColor(eventOnDate.status);
                 }
             }
 

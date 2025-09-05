@@ -11,7 +11,7 @@ export function useAbsent() {
         const month = String(now.getMonth() + 1).padStart(2, '0');
         const day = String(now.getDate()).padStart(2, '0');
         const todayStr = `${year}-${month}-${day}`;
-        console.log(todayStr);
+
         const statusAbsen: 'hadir' | 'telat' = hours > 8 ? STATUS.TELAT : STATUS.HADIR;
 
         if (myEvents.value.some((e) => e.date === todayStr && e.title === 'Absen')) {

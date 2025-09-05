@@ -1,10 +1,11 @@
 import { usePage } from '@inertiajs/vue3';
-import { onBeforeMount, ref, watch } from 'vue';
+import { onBeforeUnmount, ref, watch } from 'vue';
 import { useFormik } from 'vue-formik';
 import { toast } from 'vue-sonner';
-import { getTodayDate } from '../../utils/getTodayDate';
+import { getTodayDate } from '../../../utils/getTodayDate';
 
 export interface AddActivitiesProps {
+    event_id: string;
     title: string;
     date: string;
     name: string;
@@ -14,47 +15,50 @@ export interface AddActivitiesProps {
 
 const useAddActivities = () => {
     const previewUrl = ref<string | null>(null);
-    const selectedEvent = ref<string | null>(null);
 
     const userInfo = usePage();
     const name = userInfo.props.auth.user.name;
     const todayDate = getTodayDate();
+
     const formik = useFormik<AddActivitiesProps>({
         initialValues: {
+            event_id: crypto.randomUUID(),
             title: '',
             date: todayDate,
-            name: name,
+            name,
             status: 'pending',
             photo: null,
         },
         onSubmit: (values: AddActivitiesProps) => {
-            if (values.title === '') {
-                toast.error('Pilih aktivitas dulu!');
-                return;
+            if (!values.title) {
+                return toast.error('Pilih aktivitas dulu!');
             }
-            formik.reset();
-            return toast.success('Aktivitas berhasil ditambahkan!');
+            console.log(values);
+
+            toast.success('Aktivitas berhasil ditambahkan!');
         },
     });
 
     watch(
         () => formik.values.photo,
-        (file) => {
-            // revoke url lama dulu
+        (file, _prev, onCleanup) => {
             if (previewUrl.value) URL.revokeObjectURL(previewUrl.value);
             previewUrl.value = file ? URL.createObjectURL(file) : null;
+
+            onCleanup(() => {
+                if (previewUrl.value) {
+                    URL.revokeObjectURL(previewUrl.value);
+                    previewUrl.value = null;
+                }
+            });
         },
     );
 
-    onBeforeMount(() => {
+    onBeforeUnmount(() => {
         if (previewUrl.value) URL.revokeObjectURL(previewUrl.value);
     });
 
-    return {
-        formik,
-        selectedEvent,
-        previewUrl,
-    };
+    return { formik, previewUrl };
 };
 
 export default useAddActivities;

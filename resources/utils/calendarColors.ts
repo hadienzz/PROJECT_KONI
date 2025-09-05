@@ -1,7 +1,7 @@
 export const getEventBackgroundColor = (status?: string) => {
   switch (status) {
     case 'ditolak': return '#ef4444'
-    case 'drafted': return '#f97316'
+    case 'pending': return '#f97316'
     case 'disetujui': return '#22c55e'
     default: return '#6b7280'
   }

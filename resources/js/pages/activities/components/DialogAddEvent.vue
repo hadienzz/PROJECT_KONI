@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import useAddActivities from '@/composables/useAddActivities';
+import useAddActivities from '@/composables/activities/useAddActivities';
 import { SelectContent, SelectItem, SelectRoot, SelectTrigger } from 'reka-ui';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../../../components/ui/dialog';
 
 const open = defineModel<boolean>('open');
 
-const { selectedEvent, formik, previewUrl } = useAddActivities();
+const { formik, previewUrl } = useAddActivities();
 
 const DropdownItem = [
     { title: 'Meeting', value: 'Meeting' },
@@ -15,8 +15,6 @@ const DropdownItem = [
     { title: 'Demo DPR', value: 'Demo DPR' },
     { title: '19 Juta Lapangan Pekerjaan', value: '19 Juta Lapangan Pekerjaan' },
 ];
-
-// preview url
 </script>
 
 <template>
@@ -28,9 +26,14 @@ const DropdownItem = [
             </DialogHeader>
 
             <form @submit.prevent="formik.handleSubmit" class="space-y-2">
-                <SelectRoot class="flex" v-model="selectedEvent" name="title" v-on:update:model-value="formik.setFieldValue('title', selectedEvent)">
+                <SelectRoot
+                    class="flex"
+                    :model-value="formik.values.title"
+                    name="title"
+                    @update:model-value="(val: string) => formik.setFieldValue('title', val)"
+                >
                     <SelectTrigger class="w-full rounded-md border-[1px] border-gray-800">
-                        {{ selectedEvent ?? 'Judul Aktivitas' }}
+                        {{ formik.values.title || 'Judul Aktivitas' }}
                     </SelectTrigger>
 
                     <SelectContent :position="'popper'" class="flex max-h-60 w-full flex-col gap-1 overflow-y-auto bg-white p-2">
@@ -38,7 +41,6 @@ const DropdownItem = [
                             v-for="item in DropdownItem"
                             :key="item.value"
                             :value="item.value"
-                            @select="selectedEvent = item.value"
                             class="w-100 cursor-pointer bg-white text-center hover:bg-gray-100 md:w-110"
                         >
                             {{ item.title }}
@@ -53,6 +55,7 @@ const DropdownItem = [
                     @change="
                         (e: Event) => {
                             const target = e.target as HTMLInputElement;
+
                             if (target.files && target.files[0]) {
                                 formik.setFieldValue('photo', target.files[0]);
                             }

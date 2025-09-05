@@ -4,8 +4,9 @@ import Calendar from '@/components/Calendar.vue';
 import Card from '@/components/ui/card/Card.vue';
 import CardContent from '@/components/ui/card/CardContent.vue';
 import CardHeader from '@/components/ui/card/CardHeader.vue';
-import { useEvents } from '@/composables/useActivities';
+import { useEvents } from '@/composables/activities/useActivities';
 import { useCalendarOptions } from '@/composables/useCalendarOptions';
+import { USER_EVENTS } from '@/constants';
 
 // Update StatusType to match your actual status values
 type StatusType = 'disetujui' | 'ditolak' | 'drafted';
@@ -55,7 +56,7 @@ const filteredEmployeeEvents = computed(() => {
 });
 
 const { calendarOptions: baseCalendarOptions } = useCalendarOptions(
-    employeeEvents.value,
+    USER_EVENTS.value,
     'employee-calendar',
     {
         enableDayCellColors: true,
@@ -100,7 +101,7 @@ const employeeCalendarOptionsComputed = computed(() => ({
                             <!-- Menggunakan employeeCalendarOptionsComputed -->
                             <Calendar
                                 :key="`employee-${current}-${filteredEmployeeEvents.length}-${selectedEmployeeId}`"
-                                :events="filteredEmployeeEvents"
+                                :events="USER_EVENTS"
                                 :options="employeeCalendarOptionsComputed"
                             />
                         </div>
